@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>總部監控中心 - ONE桌遊 AI 客服系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            color: #27ae60;
+        }
+        
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .merchant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .merchant-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        
+        .merchant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        
+        .merchant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .merchant-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .merchant-status {
+            padding: 6px 14px;
+            background: #27ae60;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .merchant-status.warning {
+            background: #f39c12;
+        }
+        
+        .merchant-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            font-size: 13px;
+        }
+        
+        .info-label {
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .merchant-stores {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .store-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .store-tag {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #f0f3ff;
+            color: #667eea;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .add-merchant-card {
+            background: white;
+            border-radius: 15px;
+            padding: 60px 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px dashed #667eea;
+        }
+        
+        .add-merchant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            background: #f0f3ff;
+        }
+        
+        .add-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .add-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 總部監控中心</h1>
+            <p>管理所有商家的 AI 客服系統 | ONE桌遊總公司</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">總商家數</div>
+                <div class="stat-value">12</div>
+                <div class="stat-change">+2 本月新增</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">總管理店家數</div>
+                <div class="stat-value">45</div>
+                <div class="stat-change">+3 本月新增</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">今日總對話量</div>
+                <div class="stat-value">3,487</div>
+                <div class="stat-change">+18% 較昨日</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">AI 處理率（平均）</div>
+                <div class="stat-value">78%</div>
+                <div class="stat-change">+4% 較上週</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">系統在線率</div>
+                <div class="stat-value">99.8%</div>
+                <div class="stat-change">穩定運行</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">客戶滿意度（平均）</div>
+                <div class="stat-value">4.5 <span style="font-size: 18px; color: #999;">/ 5.0</span></div>
+                <div class="stat-change">維持穩定</div>
+            </div>
+        </div>
+        
+        <div class="section-title">📊 商家管理</div>
+        
+        <div class="merchant-grid">
+            <!-- 商家 1：Ken 的 ONE桌遊 -->
+            <div class="merchant-card" onclick="location.href='merchant-panel.html'">
+                <div class="merchant-header">
+                    <div class="merchant-name">Ken 的 ONE桌遊</div>
+                    <div class="merchant-status">運行中</div>
+                </div>
+                
+                <div class="merchant-info">
+                    <div class="info-item">
+                        <div class="info-label">管理店家</div>
+                        <div class="info-value">3 <span style="font-size: 12px; color: #999;">/ 5</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">今日對話</div>
+                        <div class="info-value">287</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">AI 處理率</div>
+                        <div class="info-value">82%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">滿意度</div>
+                        <div class="info-value">4.6</div>
+                    </div>
+                </div>
+                
+                <div class="merchant-stores">
+                    <div>管理店家：</div>
+                    <div class="store-tags">
+                        <span class="store-tag">新北土城亞東店</span>
+                        <span class="store-tag">新莊輔大店</span>
+                        <span class="store-tag">桃園平鎮店</span>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="action-btn primary" onclick="event.stopPropagation(); location.href='merchant-panel.html'">進入後台</button>
+                    <button class="action-btn secondary" onclick="event.stopPropagation(); alert('數據報表（開發中）')">數據報表</button>
+                </div>
+            </div>
+            
+            <!-- 商家 2：台中分區商家 -->
+            <div class="merchant-card">
+                <div class="merchant-header">
+                    <div class="merchant-name">台中分區商家</div>
+                    <div class="merchant-status">運行中</div>
+                </div>
+                
+                <div class="merchant-info">
+                    <div class="info-item">
+                        <div class="info-label">管理店家</div>
+                        <div class="info-value">2 <span style="font-size: 12px; color: #999;">/ 3</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">今日對話</div>
+                        <div class="info-value">194</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">AI 處理率</div>
+                        <div class="info-value">76%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">滿意度</div>
+                        <div class="info-value">4.4</div>
+                    </div>
+                </div>
+                
+                <div class="merchant-stores">
+                    <div>管理店家：</div>
+                    <div class="store-tags">
+                        <span class="store-tag">台中一中店</span>
+                        <span class="store-tag">台中民權店</span>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="action-btn primary" onclick="alert('Demo: 台中分區商家後台')">進入後台</button>
+                    <button class="action-btn secondary" onclick="alert('數據報表（開發中）')">數據報表</button>
+                </div>
+            </div>
+            
+            <!-- 商家 3：南部合作商家 -->
+            <div class="merchant-card">
+                <div class="merchant-header">
+                    <div class="merchant-name">南部合作商家</div>
+                    <div class="merchant-status">運行中</div>
+                </div>
+                
+                <div class="merchant-info">
+                    <div class="info-item">
+                        <div class="info-label">管理店家</div>
+                        <div class="info-value">5 <span style="font-size: 12px; color: #999;">/ 5</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">今日對話</div>
+                        <div class="info-value">421</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">AI 處理率</div>
+                        <div class="info-value">79%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">滿意度</div>
+                        <div class="info-value">4.5</div>
+                    </div>
+                </div>
+                
+                <div class="merchant-stores">
+                    <div>管理店家：</div>
+                    <div class="store-tags">
+                        <span class="store-tag">雲林虎尾店</span>
+                        <span class="store-tag">嘉義光彩店</span>
+                        <span class="store-tag">台南永康崑大店</span>
+                        <span class="store-tag">高雄前鎮店</span>
+                        <span class="store-tag">高雄仁武店</span>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="action-btn primary" onclick="alert('Demo: 南部合作商家後台')">進入後台</button>
+                    <button class="action-btn secondary" onclick="alert('數據報表（開發中）')">數據報表</button>
+                </div>
+            </div>
+            
+            <!-- 新增商家卡片 -->
+            <div class="add-merchant-card" onclick="alert('新增商家（開發中）\n\n將開啟商家入駐表單')">
+                <div class="add-icon">➕</div>
+                <div class="add-text">新增商家</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家管理後台 - ONE桌遊 AI 客服系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-change {
+            font-size: 13px;
+            color: #27ae60;
+        }
+        
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .module-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        
+        .module-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .module-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .module-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #f0f3ff;
+            transform: translateX(-5px);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .badge.success {
+            background: #27ae60;
+        }
+        
+        .badge.warning {
+            background: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← 返回總部監控</a>
+        
+        <div class="header">
+            <h1>🏢 商家管理後台 <span class="badge success">Ken 的 ONE桌遊</span></h1>
+            <p>管理 3 家店的 AI 客服系統 | 商家ID: MERCHANT_001</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">管理店家數</div>
+                <div class="stat-value">3 <span style="font-size: 16px; color: #999;">/ 5</span></div>
+                <div class="stat-change">+1 本月新增</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">今日總對話量</div>
+                <div class="stat-value">287</div>
+                <div class="stat-change">+12% 較昨日</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">AI 處理率</div>
+                <div class="stat-value">82%</div>
+                <div class="stat-change">+5% 較上週</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">客戶滿意度</div>
+                <div class="stat-value">4.6 <span style="font-size: 16px; color: #999;">/ 5.0</span></div>
+                <div class="stat-change">維持穩定</div>
+            </div>
+        </div>
+        
+        <div class="module-grid">
+            <div class="module-card" onclick="location.href='merchant-settings.html'">
+                <div class="module-icon">⚙️</div>
+                <div class="module-title">商家基本設定</div>
+                <div class="module-desc">商家名稱、客服資訊、AI 個性、退單政策、設備設定（可隨時修改）</div>
+            </div>
+            
+            <div class="module-card" onclick="location.href='store-management.html'">
+                <div class="module-icon">🏪</div>
+                <div class="module-title">店家管理</div>
+                <div class="module-desc">新增/編輯/停用店家，管理每個店的詳細資料（地址、價格、座位、設備）</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('即時數據監控（開發中）')">
+                <div class="module-icon">📊</div>
+                <div class="module-title">即時數據監控</div>
+                <div class="module-desc">查看各店家的對話量、AI 處理率、轉真人次數、回應時間統計</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('對話記錄查詢（開發中）')">
+                <div class="module-icon">💬</div>
+                <div class="module-title">對話記錄查詢</div>
+                <div class="module-desc">搜尋歷史對話、查看 AI 回覆、匯出對話紀錄、分析客戶問題</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('AI 規則設定（開發中）')">
+                <div class="module-icon">🎯</div>
+                <div class="module-title">AI 規則設定</div>
+                <div class="module-desc">自訂 AI 回話規則、新增常見問答、設定關鍵字自動回覆</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('推播通知管理（開發中）')">
+                <div class="module-icon">🔔</div>
+                <div class="module-title">推播通知管理</div>
+                <div class="module-desc">設定轉真人通知、系統警報、活動推播、會員通知</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('會員狀態管理（開發中）')">
+                <div class="module-icon">👥</div>
+                <div class="module-title">會員狀態管理</div>
+                <div class="module-desc">查看會員列表、設定 VIP、管理黑名單、會員標籤分類</div>
+            </div>
+            
+            <div class="module-card" onclick="alert('特殊活動設定（開發中）')">
+                <div class="module-icon">🎉</div>
+                <div class="module-title">特殊活動設定</div>
+                <div class="module-desc">新增促銷活動、設定優惠價、AI 自動推廣、活動排程管理</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家基本設定 - ONE桌遊 AI 客服系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-label .required {
+            color: #e74c3c;
+            margin-left: 5px;
+        }
+        
+        .form-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            font-size: 13px;
+        }
+        
+        .checkbox-item:hover {
+            background: #e9ecef;
+        }
+        
+        .checkbox-item.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .checkbox-item input {
+            margin-right: 6px;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .radio-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .radio-item:hover {
+            background: #e9ecef;
+        }
+        
+        .radio-item.selected {
+            background: #f0f3ff;
+            border-color: #667eea;
+        }
+        
+        .radio-item input {
+            margin-right: 12px;
+            margin-top: 3px;
+        }
+        
+        .radio-content {
+            flex: 1;
+        }
+        
+        .radio-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        
+        .radio-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .conditional-field {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .conditional-field.show {
+            display: block;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="merchant-panel.html" class="back-btn">← 返回商家後台</a>
+        
+        <div class="header">
+            <h1>⚙️ 商家基本設定</h1>
+            <p>Ken 的 ONE桌遊 | 商家ID: MERCHANT_001</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="info-box">
+                ✓ 以下設定可隨時修改，更新後將即時生效於所有管理的店家
+            </div>
+            
+            <form id="merchantForm">
+                <!-- 第一部分：商家資訊 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="section-number">1</span>
+                        商家資訊
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            商家名稱<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="merchantName" value="Ken 的 ONE桌遊" required>
+                        <div class="form-hint">您的商家品牌名稱</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            管理店家列表<span class="required">*</span>
+                        </label>
+                        <div class="form-hint" style="margin-bottom: 10px;">目前管理 3 家店（上限 5 家）| 新增/移除店家請前往「店家管理」</div>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item selected">
+                                <input type="checkbox" name="stores" value="新北土城亞東店" checked disabled> 新北土城亞東店
+                            </label>
+                            <label class="checkbox-item selected">
+                                <input type="checkbox" name="stores" value="新莊輔大店" checked disabled> 新莊輔大店
+                            </label>
+                            <label class="checkbox-item selected">
+                                <input type="checkbox" name="stores" value="桃園平鎮店" checked disabled> 桃園平鎮店
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第二部分：客服資訊 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="section-number">2</span>
+                        客服資訊
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            客服電話<span class="required">*</span>
+                        </label>
+                        <input type="tel" class="form-input" name="phone" value="0986-995-673" required>
+                        <div class="form-hint">人工客服聯絡電話（轉真人時會提供給客人）</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            客服時間<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="serviceHours" value="12:00-24:00" required>
+                        <div class="form-hint">人工客服的上班時間</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            客服時間說明（選填）
+                        </label>
+                        <textarea class="form-textarea" name="serviceDesc">客服時間：每日 12:00–24:00。若非上班時間請先留言，我們將於上班後儘快回覆</textarea>
+                        <div class="form-hint">給客人的完整說明</div>
+                    </div>
+                </div>
+                
+                <!-- 第三部分：AI 設定 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="section-number">3</span>
+                        AI 設定
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            AI 個性風格<span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="aiStyle" value="親切鄰家風">
+                                <div class="radio-content">
+                                    <div class="radio-title">親切鄰家風</div>
+                                    <div class="radio-desc">語氣像朋友一樣自然，使用禮貌用語，句尾加語助詞（喔、呢、呀）</div>
+                                </div>
+                            </label>
+                            <label class="radio-item selected">
+                                <input type="radio" name="aiStyle" value="尊榮管家風" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">尊榮管家風（當前）</div>
+                                    <div class="radio-desc">全程使用敬語（您、請、貴賓），用詞精簡優雅，先講結論再補充細節</div>
+                                </div>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="aiStyle" value="熱情小編風">
+                                <div class="radio-content">
+                                    <div class="radio-title">熱情小編風</div>
+                                    <div class="radio-desc">超級熱情、充滿活力，多用 🔥🚀🤩 符號</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            AI 名稱<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="aiName" value="AI助理（測試版，請見諒）" required>
+                        <div class="form-hint">AI 客服的顯示名稱</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            回話字數限制
+                        </label>
+                        <input type="number" class="form-input" name="maxWords" value="200">
+                        <div class="form-hint">AI 每次回覆的最大字數，預設 200 字</div>
+                    </div>
+                </div>
+                
+                <!-- 第四部分：退單政策 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="section-number">4</span>
+                        退單政策
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            提前取消時間限制<span class="required">*</span>
+                        </label>
+                        <input type="number" class="form-input" name="cancelHours" value="1" min="0" required>
+                        <div class="form-hint">客人需要提前幾小時以上才能自行取消訂單</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            退單扣款政策<span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-item selected">
+                                <input type="radio" name="cancelFee" value="no" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">不扣款（全額退回）</div>
+                                </div>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="cancelFee" value="yes">
+                                <div class="radio-content">
+                                    <div class="radio-title">扣款</div>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="conditional-field" id="feePercentField">
+                            <label class="form-label">扣款比例（%）</label>
+                            <input type="number" class="form-input" name="feePercent" placeholder="20" min="0" max="100">
+                            <div class="form-hint">請填寫扣款百分比（0-100）</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            退單說明（客製化）<span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea" name="cancelDesc" required>提前 1 小時以上可自行退款，不扣任何費用</textarea>
+                        <div class="form-hint">AI 會將此內容直接顯示給客人</div>
+                    </div>
+                </div>
+                
+                <!-- 第五部分：設備設定 -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="section-number">5</span>
+                        設備設定
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            麻將桌故障排除<span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-item selected">
+                                <input type="radio" name="mahjongSOP" value="standard" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">使用 ONE桌遊 標準款 SOP（當前）</div>
+                                    <div class="radio-desc">✓ 標準流程：檢查檔位開關 → 長按對角骰子鍵重置</div>
+                                </div>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="mahjongSOP" value="custom">
+                                <div class="radio-content">
+                                    <div class="radio-title">自訂故障排除 SOP</div>
+                                    <div class="radio-desc">✓ 自訂您的麻將桌操作方式</div>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="conditional-field" id="customSOPField">
+                            <label class="form-label">自訂故障排除說明</label>
+                            <textarea class="form-textarea" name="customSOP" placeholder="1. 剛開機張數不對時：...&#10;2. 卡住/洗很久時：...&#10;3. 混到別色牌時：..."></textarea>
+                            
+                            <label class="form-label" style="margin-top: 15px;">教學文件連結（選填）</label>
+                            <input type="url" class="form-input" name="sopLink" placeholder="https://example.com/manual.pdf">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-save">💾 儲存設定</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Radio 互動
+        document.querySelectorAll('.radio-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    const radio = this.querySelector('input');
+                    radio.checked = true;
+                }
+                
+                const groupName = this.querySelector('input').name;
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                    r.closest('.radio-item').classList.remove('selected');
+                });
+                this.classList.add('selected');
+                
+                // 條件欄位
+                if (groupName === 'cancelFee') {
+                    document.getElementById('feePercentField').classList.toggle('show', this.querySelector('input').value === 'yes');
+                }
+                
+                if (groupName === 'mahjongSOP') {
+                    document.getElementById('customSOPField').classList.toggle('show', this.querySelector('input').value === 'custom');
+                }
+            });
+        });
+        
+        // 提交
+        document.getElementById('merchantForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✓ 設定已儲存！（這是 Demo 版本）');
+        });
+    </script>
+</body>
+</html>
